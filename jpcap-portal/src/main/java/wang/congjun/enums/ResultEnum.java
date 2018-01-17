@@ -9,6 +9,7 @@ public enum ResultEnum {
     GET_INTERFACE_FAILED(1,"获取网卡接口失败")
     ,SAVE_CLIENTADDR_FAILED(2,"存储获取的包信息失败")
     ,CONVERT_ARP_FAILED(3,"转换ARP失败")
+    ,CODE_PKGMSG_FAILED(4,"包数据转码失败")
     ;
 
     private Integer code;

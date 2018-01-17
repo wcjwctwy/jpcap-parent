@@ -34,9 +34,15 @@ public class ClientAddrServiceImpl implements ClientAddrService {
     private JpcapSender jpcapSender;
 
     @Override
-    public void save() {
+    public void save()  {
         jpcapCaptor.loopPacket(-1,p -> {
 //            jpcapSender.sendPacket(p);
+            try {
+                log.info("【存储主机信息】包中的信息：{}", new String(p.data, "ISO-8859-2"));
+            }catch (Exception e){
+                log.error("【存储主机信息】包中的信息转码出错：{}", p.data);
+                throw new JpcapException(ResultEnum.CODE_PKGMSG_FAILED);
+            }
             save(p);
         });
     }
@@ -44,7 +50,7 @@ public class ClientAddrServiceImpl implements ClientAddrService {
     @Override
     public ClientAddr save(Packet p) {
         PacketDTO convert = Packet2PacketDTOConverter.convert(p);
-        log.info("【存储主机信息】转换包信息 convert={}",convert);
+        log.debug("【存储主机信息】转换包信息 convert={}",convert);
         if(ObjectUtils.isEmpty(convert)) return null;
 
         try {
@@ -63,7 +69,7 @@ public class ClientAddrServiceImpl implements ClientAddrService {
             String macAddr = clientAddrByMacAddr.getMacAddr();
             if(!ObjectUtils.isEmpty(macAddr))clientAddr.setMacAddr(macAddr);
             clientAddr.setUpdateTime(new Date());
-            log.info("【存储主机信息】更新数据 clientAddr={}",clientAddr);
+            log.debug("【存储主机信息】更新数据 clientAddr={}",clientAddr);
             return clientAddrRepository.save(clientAddr);
         }catch (Exception e){
             log.error("【存储主机信息】出错了！convert={}",convert);
