@@ -1,0 +1,14 @@
+server:
+  port: 8022
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/jpcap
+    username: root
+    password: 890610
+jpcap:
+  intrface: 0
+  snaplen: 1512
+  promisc: true
+  to_ms: 20
+  localIp: 10.20.7.23
+  localMac: 1c:1b:d:b7:71:cc
